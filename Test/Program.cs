@@ -1,12 +1,21 @@
-﻿namespace Test
+﻿using TWSEParser.Services;
+using TWSEParser.Model;
+using System;
+
+namespace Test
 {
     class Program
     {
         static void Main(string[] args)
         {
-            if (args == null)
+            var check = OptionsService.Start(
+                new Options {
+                    Sources = Sources.FutPrevious30DaysSalesData,
+                    //QueryStartDate = new DateTime(2019,1,29)
+                });
+            if(check != true)
             {
-                throw new System.ArgumentNullException(nameof(args));
+                Console.WriteLine("False");
             }
         }
     }
