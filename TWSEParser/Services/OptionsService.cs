@@ -9,16 +9,16 @@ namespace TWSEParser.Services
 {
     public static class OptionsService
     {
-        private static readonly HttpClient client = new HttpClient();
+        private static Guid guid;
         public static string Start(this Model.Options options)
         {
-            ParserService ps = new ParserService();
             switch (options.Sources)
             {
                 case Model.Sources.FutDailyMarketView:
+                    options.Response = FutDailyMarketView(options);
                     break;
                 case Model.Sources.FutDailyMarketViewOptions:
-                    options.Response = FutDailyMarketViewOptionsAsync(options.QueryStartDate, options.QueryEndDate);
+                    options.Response = FutDailyMarketViewOptions(options.QueryStartDate, options.QueryEndDate);
                     break;
                 case Model.Sources.FutPrevious30DaysSalesData:
                     ParserFutPrevious30DaysSalesData(options.QueryStartDate, options.QueryEndDate);
@@ -52,11 +52,10 @@ namespace TWSEParser.Services
             var htmlDoc = ps.GetSourceHTML(@"http://www.taifex.com.tw/cht/3/dlFutPrevious30DaysSpreadSalesData");
             ps.GetFileName(htmlDoc.DocumentNode.SelectNodes("//td/input"), startAt, endAt);
         }
-        private static object FutDailyMarketViewOptionsAsync(DateTime startAt, DateTime endAt)
+        private static object FutDailyMarketViewOptions(DateTime startAt, DateTime endAt)
         {
             var url = @"http://www.taifex.com.tw/cht/3/getFutcontractDl.do?";
             url += "queryStartDate=" + startAt.ToString("yyyy/MM/dd") + "&queryEndDate=" + endAt.ToString("yyyy/MM/dd");
-            Console.WriteLine(url);
             WebRequest request = WebRequest.Create(url);
             request.Method = "GET";
             using (var httpResponse = (HttpWebResponse)request.GetResponse())
@@ -64,6 +63,28 @@ namespace TWSEParser.Services
             {
                 return JsonConvert.DeserializeObject(streamReader.ReadToEnd());
             }
+        }
+        private static object FutDailyMarketView(Model.Options options)
+        {
+            var url = @"http://www.taifex.com.tw/cht/3/dlFutDataDown";
+            WebRequest request = WebRequest.Create(url);
+            request.Method = "POST";
+            string postData = String.Format("down_type=1&commodity_id={0}&queryStartDate={1}&queryEndDate={2}",options.Commodity,options.QueryStartDate,options.QueryEndDate);
+            var data = Encoding.ASCII.GetBytes(postData);
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = data.Length;
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, postData.Length);
+            }
+            guid = Guid.NewGuid();
+            using (var resp = (HttpWebResponse)request.GetResponse())
+            using (var output = File.OpenWrite(guid.ToString() + ".csv"))
+            using (var input = resp.GetResponseStream())
+            {
+                input.CopyTo(output);
+            }
+            return guid.ToString()+".csv";
         }
     }
 }

@@ -10,9 +10,10 @@ namespace Test
         {
             var o = new Options
             {
-                Sources = Sources.FutDailyMarketViewOptions,
-                QueryStartDate = new DateTime(2019,1,15),
-                QueryEndDate = new DateTime(2019, 1, 17)
+                Sources = Sources.FutDailyMarketView,
+                Commodity = "CAF",
+                QueryStartDate = new DateTime(2018,11,29),
+                QueryEndDate = new DateTime(2018, 11, 30)
             };
             _ = o.Start();
             Console.WriteLine(o.Response);
