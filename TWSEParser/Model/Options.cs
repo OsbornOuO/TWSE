@@ -12,12 +12,15 @@ namespace TWSEParser.Model
 
         //起始日期
         public DateTime QueryStartDate { get; set; }
-
+        
         //結束日期
         public DateTime QueryEndDate { get; set; }
+
+        public object Response { get; set; }
     }
     public enum Sources :int {
         FutDailyMarketView,
+        FutDailyMarketViewOptions,
         FutPrevious30DaysSalesData,
         FutPrevious30DaysSpreadOrdersReport,
         FutPrevious30DaysSpreadSalesData

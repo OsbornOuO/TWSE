@@ -8,15 +8,14 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var check = OptionsService.Start(
-                new Options {
-                    Sources = Sources.FutPrevious30DaysSalesData,
-                    //QueryStartDate = new DateTime(2019,1,29)
-                });
-            if(check != true)
+            var o = new Options
             {
-                Console.WriteLine("False");
-            }
+                Sources = Sources.FutDailyMarketViewOptions,
+                QueryStartDate = new DateTime(2019,1,15),
+                QueryEndDate = new DateTime(2019, 1, 17)
+            };
+            _ = o.Start();
+            Console.WriteLine(o.Response);
         }
     }
 }
