@@ -10,13 +10,13 @@ namespace Test
         {
             var o = new Options
             {
-                Sources = Sources.StockDayAVG,
+                Sources = Sources.DailyFXRateDown,
                 StockNo= 1102,
                 Commodity = "CAF",
-                QueryStartDate = new DateTime(2019,01,25),
-                QueryEndDate = new DateTime(2018, 11, 30)
+                QueryStartDate = new DateTime(2019,01,01),
+                QueryEndDate = new DateTime(2019, 02,09)
             };
-            _ = o.Start();
+            o.Start();
             Console.WriteLine(o.Response);
         }
     }

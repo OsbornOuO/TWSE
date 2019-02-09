@@ -10,7 +10,7 @@ namespace TWSEParser.Services
     public static class OptionsService
     {
         private static Guid guid;
-        public static string Start(this Model.Options options)
+        public static void Start(this Model.Options options)
         {
             switch (options.Sources)
             {
@@ -32,10 +32,12 @@ namespace TWSEParser.Services
                 case Model.Sources.StockDayAVG:
                     options.Response = StockDayAVG(options.QueryStartDate,options.StockNo);
                     break;
+                case Model.Sources.DailyFXRateDown:
+                    options.Response = DailyFXRateDown(options.QueryStartDate, options.QueryEndDate);
+                    break;
                 default:
                     break;
             }
-            return "";
         }
         private static void ParserFutPrevious30DaysSalesData(DateTime startAt, DateTime endAt)
         {
@@ -96,6 +98,28 @@ namespace TWSEParser.Services
             url += "date=" + date.ToString("yyyyMMdd")+ "&stockNo="+stockNo;
             WebRequest request = WebRequest.Create(url);
             request.Method = "GET";
+            guid = Guid.NewGuid();
+            using (var resp = (HttpWebResponse)request.GetResponse())
+            using (var output = File.OpenWrite(guid.ToString() + ".csv"))
+            using (var input = resp.GetResponseStream())
+            {
+                input.CopyTo(output);
+            }
+            return guid.ToString() + ".csv";
+        }
+        private static object DailyFXRateDown(DateTime startAt,DateTime endAt)
+        {
+            var url = @"https://www.taifex.com.tw/cht/3/dailyFXRateDown";
+            WebRequest request = WebRequest.Create(url);
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            string postData = String.Format("queryStartDate={0}&queryEndDate={1}", startAt.ToString("yyyy/MM/dd"), endAt.ToString("yyyy/MM/dd"));
+            var data = Encoding.ASCII.GetBytes(postData);
+            request.ContentLength = data.Length;
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, postData.Length);
+            }
             guid = Guid.NewGuid();
             using (var resp = (HttpWebResponse)request.GetResponse())
             using (var output = File.OpenWrite(guid.ToString() + ".csv"))

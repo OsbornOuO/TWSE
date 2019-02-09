@@ -9,6 +9,7 @@ namespace TWSEParser.Model
 
         //股票代碼
         public int StockNo { get; set; }
+
         //契約
         public string Commodity { get; set; }
 
@@ -27,6 +28,7 @@ namespace TWSEParser.Model
         FutPrevious30DaysSpreadOrdersReport,
         FutPrevious30DaysSpreadSalesData,
         StockDayAVG,
+        DailyFXRateDown,
     }
 
 }
