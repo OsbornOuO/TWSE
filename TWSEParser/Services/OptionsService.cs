@@ -29,6 +29,9 @@ namespace TWSEParser.Services
                 case Model.Sources.FutPrevious30DaysSpreadSalesData:
                     FutPrevious30DaysSpreadSalesData(options.QueryStartDate, options.QueryEndDate);
                     break;
+                case Model.Sources.StockDayAVG:
+                    options.Response = StockDayAVG(options.QueryStartDate,options.StockNo);
+                    break;
                 default:
                     break;
             }
@@ -69,9 +72,9 @@ namespace TWSEParser.Services
             var url = @"http://www.taifex.com.tw/cht/3/dlFutDataDown";
             WebRequest request = WebRequest.Create(url);
             request.Method = "POST";
-            string postData = String.Format("down_type=1&commodity_id={0}&queryStartDate={1}&queryEndDate={2}",options.Commodity,options.QueryStartDate,options.QueryEndDate);
-            var data = Encoding.ASCII.GetBytes(postData);
             request.ContentType = "application/x-www-form-urlencoded";
+            string postData = String.Format("down_type=1&commodity_id={0}&queryStartDate={1}&queryEndDate={2}", options.Commodity, options.QueryStartDate, options.QueryEndDate);
+            var data = Encoding.ASCII.GetBytes(postData);
             request.ContentLength = data.Length;
             using (var stream = request.GetRequestStream())
             {
@@ -85,6 +88,22 @@ namespace TWSEParser.Services
                 input.CopyTo(output);
             }
             return guid.ToString()+".csv";
+        }
+        private static object StockDayAVG(DateTime startAt,int stockNo)
+        {
+            var url = @"http://www.twse.com.tw/exchangeReport/STOCK_DAY_AVG?response=csv&";
+            var date = new DateTime(startAt.Year, startAt.Month, 1);
+            url += "date=" + date.ToString("yyyyMMdd")+ "&stockNo="+stockNo;
+            WebRequest request = WebRequest.Create(url);
+            request.Method = "GET";
+            guid = Guid.NewGuid();
+            using (var resp = (HttpWebResponse)request.GetResponse())
+            using (var output = File.OpenWrite(guid.ToString() + ".csv"))
+            using (var input = resp.GetResponseStream())
+            {
+                input.CopyTo(output);
+            }
+            return guid.ToString() + ".csv";
         }
     }
 }

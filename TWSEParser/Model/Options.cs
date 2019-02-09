@@ -7,6 +7,8 @@ namespace TWSEParser.Model
         //資料來源
         public Sources Sources { get; set; }
 
+        //股票代碼
+        public int StockNo { get; set; }
         //契約
         public string Commodity { get; set; }
 
@@ -23,7 +25,8 @@ namespace TWSEParser.Model
         FutDailyMarketViewOptions,
         FutPrevious30DaysSalesData,
         FutPrevious30DaysSpreadOrdersReport,
-        FutPrevious30DaysSpreadSalesData
+        FutPrevious30DaysSpreadSalesData,
+        StockDayAVG,
     }
 
 }
