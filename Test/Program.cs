@@ -13,8 +13,8 @@ namespace Test
                 Sources = Sources.DailyFXRateDown,
                 StockNo= 1102,
                 Commodity = "CAF",
-                QueryStartDate = new DateTime(2019,01,01),
-                QueryEndDate = new DateTime(2019, 02,09)
+                QueryStartDate = new DateTime(2018,12,01),
+                QueryEndDate = new DateTime(2019, 01,03)
             };
             o.Start();
             Console.WriteLine(o.Response);
