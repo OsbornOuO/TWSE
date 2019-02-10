@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -73,9 +74,10 @@ namespace TWSEParser.Services
             {
                 case "GET":
                     WebRequest request = WebRequest.Create(url+querystr);
+                    Console.WriteLine(url + querystr);
                     request.Method = type;
                     webRequest = request;
-                    break;
+                    return;
                 case "POST":
                     request = WebRequest.Create(url);
                     request.Method = type;
@@ -100,23 +102,21 @@ namespace TWSEParser.Services
             using (var output = File.OpenWrite(guid.ToString() + ".csv"))
             using (var input = resp.GetResponseStream())
             {
-                if (resp.ContentType.Contains("html"))
-                {
-                    input.CopyTo(output);
-                    return guid.ToString() + ".csv";
-                }
-                else
+                var disposition = resp.Headers.AllKeys.Where(k => k == "Content-Disposition").FirstOrDefault();
+                if(disposition == null)
                 {
                     return null;
-                }
+                }         
+                input.CopyTo(output);
             }
+            return guid.ToString() + ".csv";
         }
         public object GetResponse()
         {
             using (var resp = (HttpWebResponse)webRequest.GetResponse())
             using (var streamReader = new StreamReader(resp.GetResponseStream(), Encoding.UTF8))
             {
-                if (resp.ContentType.Contains("html"))
+                if (resp.ContentType.Contains("json"))
                 {
                     return JsonConvert.DeserializeObject(streamReader.ReadToEnd());
                 }

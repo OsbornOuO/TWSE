@@ -24,7 +24,7 @@ namespace TWSEParser.Services
                     break;
                 case Model.Sources.StockDayAVG:
                     var date = new DateTime(options.QueryStartDate.Year, options.QueryStartDate.Month, 1);
-                    postData = string.Format(querystr, date.ToString("yyyymmdd"), options.StockNo);
+                    postData = string.Format(querystr, date.ToString("yyyyMMdd"), options.StockNo);
                     options.Response = HttpReqToDownLoadFile(options.Sources, postData);
                     break;
                 case Model.Sources.FutPrevious30DaysSalesData:
