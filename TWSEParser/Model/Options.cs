@@ -24,11 +24,23 @@ namespace TWSEParser.Model
     public enum Sources :int {
         FutDailyMarketView,
         FutDailyMarketViewOptions,
+
         FutPrevious30DaysSalesData,
         FutPrevious30DaysSpreadOrdersReport,
         FutPrevious30DaysSpreadSalesData,
+
         StockDayAVG,
         DailyFXRateDown,
+
+        LargeTraderFutDown,
+        LargeTraderOptView,
+
+        TotalTableDateView,
+
+        FutAndOptDateView,
+        FutContractsDateView,
+        OptContractsDateView,
+        CallsAndPutsDateView,
     }
 
 }

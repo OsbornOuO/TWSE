@@ -10,11 +10,11 @@ namespace Test
         {
             var o = new Options
             {
-                Sources = Sources.DailyFXRateDown,
+                Sources = Sources.LargeTraderFutDown,
                 StockNo= 1102,
                 Commodity = "CAF",
-                QueryStartDate = new DateTime(2018,12,01),
-                QueryEndDate = new DateTime(2019, 01,03)
+                QueryStartDate = new DateTime(2019,01,02),
+                QueryEndDate = new DateTime(2019, 01,04)
             };
             o.Start();
             Console.WriteLine(o.Response);

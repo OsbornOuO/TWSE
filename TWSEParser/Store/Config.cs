@@ -63,6 +63,69 @@ namespace TWSEParser.Store
                         Method = "POST"
                     }
                 },
+                {
+                    Model.Sources.LargeTraderFutDown,
+                    new ParserDetail
+                    {
+                        URL =@"https://www.taifex.com.tw/cht/3/largeTraderFutDown",
+                        QueryString =@"queryStartDate={0}&queryEndDate={1}",
+                        Method = "POST"
+                    }
+                },
+                {
+                    Model.Sources.LargeTraderOptView,
+                    new ParserDetail
+                    {
+                        URL = @"https://www.taifex.com.tw/cht/3/largeTraderOptView",
+                        QueryString = @"queryStartDate={0}&queryEndDate={1}",
+                        Method = "POST",
+                    }
+                },
+                {
+                    Model.Sources.TotalTableDateView,
+                    new ParserDetail
+                    {
+                        URL = @"https://www.taifex.com.tw/cht/3/totalTableDateView",
+                        QueryString =  @"queryStartDate={0}&queryEndDate={1}",
+                        Method = "POST",
+                    }
+                },
+                {
+                    Model.Sources.FutAndOptDateView,
+                    new ParserDetail
+                    {
+                        URL = @"https://www.taifex.com.tw/cht/3/futAndOptDateView",
+                        QueryString = @"queryStartDate={0}&queryEndDate={1}",
+                        Method = "POST"
+                    }
+                },
+                {
+                    Model.Sources.FutContractsDateView,
+                    new ParserDetail
+                    {
+                        URL = @"https://www.taifex.com.tw/cht/3/futContractsDateView",
+                        QueryString = @"queryStartDate={0}&queryEndDate={1}",
+                        Method = "POST"
+                    }
+                },
+                {
+                    Model.Sources.OptContractsDateView,
+                    new ParserDetail
+                    {
+                        URL =@"https://www.taifex.com.tw/cht/3/optContractsDateView",
+                        QueryString = @"queryStartDate={0}&queryEndDate={1}",
+                        Method = "POST"
+                    }
+                },
+                {
+                    Model.Sources.CallsAndPutsDateView,
+                    new ParserDetail
+                    {
+                        URL =@"https://www.taifex.com.tw/cht/3/callsAndPutsDateView",
+                        QueryString = @"queryStartDate={0}&queryEndDate={1}",
+                        Method = "POST"
+                    }
+                }
             };
         }
         public class ParserDetail

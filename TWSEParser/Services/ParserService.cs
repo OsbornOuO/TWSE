@@ -100,16 +100,30 @@ namespace TWSEParser.Services
             using (var output = File.OpenWrite(guid.ToString() + ".csv"))
             using (var input = resp.GetResponseStream())
             {
-                input.CopyTo(output);
+                if (resp.ContentType.Contains("html"))
+                {
+                    input.CopyTo(output);
+                    return guid.ToString() + ".csv";
+                }
+                else
+                {
+                    return null;
+                }
             }
-            return guid.ToString() + ".csv";
         }
         public object GetResponse()
         {
-            using (var httpResponse = (HttpWebResponse)webRequest.GetResponse())
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream(), Encoding.UTF8))
+            using (var resp = (HttpWebResponse)webRequest.GetResponse())
+            using (var streamReader = new StreamReader(resp.GetResponseStream(), Encoding.UTF8))
             {
-                return JsonConvert.DeserializeObject(streamReader.ReadToEnd());
+                if (resp.ContentType.Contains("html"))
+                {
+                    return JsonConvert.DeserializeObject(streamReader.ReadToEnd());
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
     }
